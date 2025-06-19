@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block title %}Donor Registration - Organ Donation Matching System{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <h2 class="card-title text-center mb-4">
+                    <i class="fas fa-hand-holding-heart text-primary me-2"></i>
+                    Donor Registration
+                </h2>
+                
+                <form method="POST" action="{{ url_for('donor_register') }}">
+                    {{ form.hidden_tag() }}
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ form.name.label(class="form-label") }}
+                                {% if form.name.errors %}
+                                    {{ form.name(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.name.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.name(class="form-control", placeholder="Enter your full name") }}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ form.age.label(class="form-label") }}
+                                {% if form.age.errors %}
+                                    {{ form.age(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.age.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.age(class="form-control", placeholder="Enter your age") }}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ form.gender.label(class="form-label") }}
+                                {% if form.gender.errors %}
+                                    {{ form.gender(class="form-select is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.gender.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.gender(class="form-select") }}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ form.blood_group.label(class="form-label") }}
+                                {% if form.blood_group.errors %}
+                                    {{ form.blood_group(class="form-select is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.blood_group.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.blood_group(class="form-select") }}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ form.organ_type.label(class="form-label") }}
+                                {% if form.organ_type.errors %}
+                                    {{ form.organ_type(class="form-select is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.organ_type.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.organ_type(class="form-select") }}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ form.contact.label(class="form-label") }}
+                                {% if form.contact.errors %}
+                                    {{ form.contact(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.contact.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.contact(class="form-control", placeholder="Enter your contact number") }}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-check form-switch mb-4">
+                        {{ form.availability(class="form-check-input") }}
+                        {{ form.availability.label(class="form-check-label") }}
+                    </div>
+                    
+                    <div class="alert alert-info mb-4">
+                        <h5 class="alert-heading"><i class="fas fa-info-circle me-2"></i> Important Information!</h5>
+                        <p class="mb-0">By registering as a donor, you acknowledge that:</p>
+                        <ul class="mb-0">
+                            <li>Your information will be used solely for organ matching purposes</li>
+                            <li>You'll be contacted if a potential match is found</li>
+                            <li>You can update your availability status at any time</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="d-grid">
+                        {{ form.submit(class="btn btn-primary btn-lg") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

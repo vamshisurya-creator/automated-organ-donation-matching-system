@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Notifications - Organ Donation Matching System{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-light">
+                <h2 class="card-title mb-0">
+                    <i class="fas fa-bell text-primary me-2"></i>
+                    Notifications & Alerts
+                </h2>
+            </div>
+            <div class="card-body">
+                <p class="lead mb-4">
+                    Recent match notifications and system alerts are displayed here.
+                </p>
+                
+                {% if matches %}
+                    <div class="list-group">
+                        {% for match in matches %}
+                        <div class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">
+                                    <i class="fas fa-link text-success me-2"></i>
+                                    Match Found!
+                                </h5>
+                                <small class="text-muted">{{ match.created_at.strftime('%Y-%m-%d %H:%M') }}</small>
+                            </div>
+                            <p class="mb-1">
+                                <strong>Donor:</strong> {{ match.donor.name }} ({{ match.donor.blood_group }}) - 
+                                <strong>Recipient:</strong> {{ match.recipient.name }} ({{ match.recipient.blood_group }})
+                            </p>
+                            <p class="mb-1">
+                                <strong>Organ:</strong> {{ match.donor.organ_type }} | 
+                                <strong>Match Score:</strong> 
+                                {% if match.match_score >= 90 %}
+                                    <span class="badge bg-success">{{ match.match_score }}</span>
+                                {% elif match.match_score >= 80 %}
+                                    <span class="badge bg-primary">{{ match.match_score }}</span>
+                                {% elif match.match_score >= 70 %}
+                                    <span class="badge bg-warning text-dark">{{ match.match_score }}</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">{{ match.match_score }}</span>
+                                {% endif %}
+                            </p>
+                            <small>
+                                <i class="fas fa-info-circle me-1"></i>
+                                {% if match.recipient.urgency == 'High' %}
+                                    <span class="text-danger">High urgency recipient</span>
+                                {% elif match.recipient.urgency == 'Medium' %}
+                                    <span class="text-warning">Medium urgency recipient</span>
+                                {% else %}
+                                    <span class="text-info">Low urgency recipient</span>
+                                {% endif %}
+                            </small>
+                            <button class="btn btn-sm btn-outline-primary mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMatch{{ match.id }}" aria-expanded="false" aria-controls="collapseMatch{{ match.id }}">
+                                Show Details
+                            </button>
+                            <div class="collapse mt-2" id="collapseMatch{{ match.id }}">
+                                <div class="card card-body">
+                                    <p><strong>Match Reasoning:</strong></p>
+                                    <p class="font-monospace" style="white-space: pre-line">{{ match.match_notes }}</p>
+                                    
+                                    <div class="alert alert-info mb-0">
+                                        <small>
+                                            <i class="fas fa-phone me-1"></i> Donor Contact: {{ match.donor.contact }} | 
+                                            <i class="fas fa-phone me-1"></i> Recipient Contact: {{ match.recipient.contact }}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="alert alert-info text-center">
+                        <i class="fas fa-info-circle fa-2x mb-3"></i>
+                        <p class="mb-0">No recent notifications available. Run the matching algorithm to generate new matches.</p>
+                    </div>
+                    
+                    <div class="text-center mt-4">
+                        <a href="{{ url_for('match') }}" class="btn btn-primary">
+                            <i class="fas fa-sync-alt me-2"></i> Run Matching Algorithm
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

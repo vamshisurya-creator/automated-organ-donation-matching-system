@@ -1,0 +1,365 @@
+{% extends "base.html" %}
+
+{% block title %}System Diagrams - Organ Donation Matching System{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body">
+                <h2 class="card-title mb-4">
+                    <i class="fas fa-project-diagram text-primary me-2"></i>
+                    System Diagrams
+                </h2>
+                
+                <ul class="nav nav-tabs mb-4" id="diagramTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="usecase-tab" data-bs-toggle="tab" data-bs-target="#usecase" type="button" role="tab" aria-controls="usecase" aria-selected="true">
+                            Use Case Diagram
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="class-tab" data-bs-toggle="tab" data-bs-target="#class" type="button" role="tab" aria-controls="class" aria-selected="false">
+                            Class Diagram
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="sequence-tab" data-bs-toggle="tab" data-bs-target="#sequence" type="button" role="tab" aria-controls="sequence" aria-selected="false">
+                            Sequence Diagram
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="er-tab" data-bs-toggle="tab" data-bs-target="#er" type="button" role="tab" aria-controls="er" aria-selected="false">
+                            ER Diagram
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="deployment-tab" data-bs-toggle="tab" data-bs-target="#deployment" type="button" role="tab" aria-controls="deployment" aria-selected="false">
+                            Deployment Diagram
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="navigation-tab" data-bs-toggle="tab" data-bs-target="#navigation" type="button" role="tab" aria-controls="navigation" aria-selected="false">
+                            Navigation Flow
+                        </button>
+                    </li>
+                </ul>
+                
+                <div class="tab-content" id="diagramTabsContent">
+                    <!-- Use Case Diagram -->
+                    <div class="tab-pane fade show active" id="usecase" role="tabpanel" aria-labelledby="usecase-tab">
+                        <h4 class="mb-3">Use Case Diagram</h4>
+                        <div class="card">
+                            <div class="card-body">
+                                <pre class="text-light bg-dark p-3">
+@startuml
+left to right direction
+actor "Donor" as donor
+actor "Recipient" as recipient
+actor "Administrator" as admin
+
+rectangle "Organ Donation Matching System" {
+  usecase "Register as Donor" as UC1
+  usecase "Register as Recipient" as UC2
+  usecase "Run Matching Algorithm" as UC3
+  usecase "View Organ Availability" as UC4
+  usecase "View Notifications" as UC5
+  usecase "Manage Donors" as UC6
+  usecase "Manage Recipients" as UC7
+  usecase "Manage Matches" as UC8
+  usecase "View System Diagrams" as UC9
+}
+
+donor --> UC1
+recipient --> UC2
+admin --> UC3
+admin --> UC6
+admin --> UC7
+admin --> UC8
+admin --> UC9
+donor --> UC4
+recipient --> UC4
+admin --> UC4
+donor --> UC5
+recipient --> UC5
+admin --> UC5
+@enduml
+                                </pre>
+                                <p class="mt-3 text-muted">
+                                    The Use Case Diagram shows the interactions between different actors (Donor, Recipient, and Administrator) and the system functionalities. It visualizes who can perform which actions within the system.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Class Diagram -->
+                    <div class="tab-pane fade" id="class" role="tabpanel" aria-labelledby="class-tab">
+                        <h4 class="mb-3">Class Diagram</h4>
+                        <div class="card">
+                            <div class="card-body">
+                                <pre class="text-light bg-dark p-3">
+@startuml
+class Donor {
+  +id: Integer
+  +name: String
+  +age: Integer
+  +gender: String
+  +blood_group: String
+  +organ_type: String
+  +contact: String
+  +availability: Boolean
+  +created_at: DateTime
+}
+
+class Recipient {
+  +id: Integer
+  +name: String
+  +age: Integer
+  +gender: String
+  +blood_group: String
+  +required_organ: String
+  +urgency: String
+  +contact: String
+  +created_at: DateTime
+}
+
+class Match {
+  +id: Integer
+  +donor_id: Integer
+  +recipient_id: Integer
+  +match_score: Float
+  +status: String
+  +match_notes: Text
+  +created_at: DateTime
+}
+
+Donor "1" -- "0..*" Match : provides >
+Recipient "1" -- "0..*" Match : receives >
+@enduml
+                                </pre>
+                                <p class="mt-3 text-muted">
+                                    The Class Diagram shows the structure of the system classes (Donor, Recipient, and Match) and their relationships. It visualizes the attributes of each class and how they are connected to each other.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Sequence Diagram -->
+                    <div class="tab-pane fade" id="sequence" role="tabpanel" aria-labelledby="sequence-tab">
+                        <h4 class="mb-3">Sequence Diagram</h4>
+                        <div class="card">
+                            <div class="card-body">
+                                <pre class="text-light bg-dark p-3">
+@startuml
+actor "User" as user
+participant "Web Interface" as ui
+participant "Flask Controller" as controller
+participant "Matching Algorithm" as algorithm
+database "Database" as db
+
+user -> ui: Register as donor/recipient
+ui -> controller: Submit form data
+controller -> db: Store donor/recipient data
+db --> controller: Confirmation
+controller --> ui: Display success message
+ui --> user: Show confirmation
+
+user -> ui: Request to run matching algorithm
+ui -> controller: Process request
+controller -> algorithm: Run matching process
+algorithm -> db: Fetch donors and recipients
+db --> algorithm: Return donors and recipients
+algorithm -> algorithm: Calculate compatibility scores
+algorithm -> db: Store match results
+db --> algorithm: Confirmation
+algorithm --> controller: Return match results
+controller --> ui: Display match results
+ui --> user: Show matches with details
+
+user -> ui: View organ availability
+ui -> controller: Request organ data
+controller -> db: Query available organs
+db --> controller: Return organ availability
+controller --> ui: Display organ tracker
+ui --> user: Show organ availability
+@enduml
+                                </pre>
+                                <p class="mt-3 text-muted">
+                                    The Sequence Diagram visualizes the interactions between the user, system components, and database over time. It shows the flow of actions from registration to matching, illustrating how data moves through the system.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- ER Diagram -->
+                    <div class="tab-pane fade" id="er" role="tabpanel" aria-labelledby="er-tab">
+                        <h4 class="mb-3">Entity Relationship Diagram</h4>
+                        <div class="card">
+                            <div class="card-body">
+                                <pre class="text-light bg-dark p-3">
+@startuml
+entity "Donor" as donor {
+  *id : integer <<PK>>
+  --
+  *name : varchar
+  *age : integer
+  *gender : varchar
+  *blood_group : varchar
+  *organ_type : varchar
+  *contact : varchar
+  *availability : boolean
+  *created_at : datetime
+}
+
+entity "Recipient" as recipient {
+  *id : integer <<PK>>
+  --
+  *name : varchar
+  *age : integer
+  *gender : varchar
+  *blood_group : varchar
+  *required_organ : varchar
+  *urgency : varchar
+  *contact : varchar
+  *created_at : datetime
+}
+
+entity "Match" as match {
+  *id : integer <<PK>>
+  --
+  *donor_id : integer <<FK>>
+  *recipient_id : integer <<FK>>
+  *match_score : float
+  *status : varchar
+  *match_notes : text
+  *created_at : datetime
+}
+
+donor ||--o{ match
+recipient ||--o{ match
+@enduml
+                                </pre>
+                                <p class="mt-3 text-muted">
+                                    The Entity Relationship Diagram shows the structure of the database, including tables (Donor, Recipient, Match), their attributes, primary keys, foreign keys, and the relationships between tables.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Deployment Diagram -->
+                    <div class="tab-pane fade" id="deployment" role="tabpanel" aria-labelledby="deployment-tab">
+                        <h4 class="mb-3">Deployment Diagram</h4>
+                        <div class="card">
+                            <div class="card-body">
+                                <pre class="text-light bg-dark p-3">
+@startuml
+node "Client Browser" as browser {
+  artifact "HTML/CSS/JS" as frontend
+}
+
+node "Web Server" as webserver {
+  artifact "Flask Application" as flask {
+    component "Templates" as templates
+    component "Routes" as routes
+    component "Models" as models
+    component "Forms" as forms
+    component "Matching Algorithm" as algorithm
+  }
+}
+
+database "SQLite Database" as db {
+  component "Donor Table" as donor_table
+  component "Recipient Table" as recipient_table
+  component "Match Table" as match_table
+}
+
+browser -- webserver : HTTP/HTTPS
+flask -- db : SQLAlchemy ORM
+frontend ..> templates : renders
+routes ..> models : uses
+routes ..> forms : uses
+routes ..> algorithm : uses
+models -- db : maps to
+@enduml
+                                </pre>
+                                <p class="mt-3 text-muted">
+                                    The Deployment Diagram illustrates the physical architecture of the system, showing how components are distributed across different nodes (Client Browser, Web Server, Database). It visualizes how the components communicate with each other.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Navigation Flow -->
+                    <div class="tab-pane fade" id="navigation" role="tabpanel" aria-labelledby="navigation-tab">
+                        <h4 class="mb-3">Window Navigation Flow</h4>
+                        <div class="card">
+                            <div class="card-body">
+                                <pre class="text-light bg-dark p-3">
+@startuml
+left to right direction
+state "Home Page" as home
+state "Donor Registration" as donor_reg
+state "Recipient Registration" as recipient_reg
+state "Match Page" as match
+state "Organ Availability" as organs
+state "Notifications" as notifications
+state "Admin Dashboard" as admin
+state "System Diagrams" as diagrams
+state "Donor Edit" as donor_edit
+state "Recipient Edit" as recipient_edit
+
+[*] --> home
+home --> donor_reg
+home --> recipient_reg
+home --> match
+home --> organs
+home --> notifications
+home --> admin
+home --> diagrams
+
+donor_reg --> home : Submit
+recipient_reg --> home : Submit
+
+admin --> donor_edit
+admin --> recipient_edit
+donor_edit --> admin : Save/Cancel
+recipient_edit --> admin : Save/Cancel
+
+match --> notifications : Match found
+@enduml
+                                </pre>
+                                <p class="mt-3 text-muted">
+                                    The Navigation Flow Diagram shows how users can navigate between different pages of the application. It visualizes the possible paths users can take through the system interface.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <h5>Textual Navigation Description:</h5>
+                            <ol class="list-group list-group-numbered">
+                                <li class="list-group-item">The user starts at the <strong>Home Page</strong>, which provides an overview of the system and quick access to all main functions.</li>
+                                <li class="list-group-item">From the Home Page, users can navigate to:
+                                    <ul>
+                                        <li>Donor Registration Page</li>
+                                        <li>Recipient Registration Page</li>
+                                        <li>Match Page</li>
+                                        <li>Organ Availability Tracker</li>
+                                        <li>Notifications Page</li>
+                                        <li>Admin Dashboard</li>
+                                        <li>System Diagrams</li>
+                                    </ul>
+                                </li>
+                                <li class="list-group-item">After submitting donor or recipient registration, users are redirected to the Home Page with a success message.</li>
+                                <li class="list-group-item">From the Admin Dashboard, administrators can navigate to edit forms for donors and recipients.</li>
+                                <li class="list-group-item">The Match Page allows running the matching algorithm and viewing match results.</li>
+                                <li class="list-group-item">When matches are found, users can view detailed notifications on the Notifications Page.</li>
+                                <li class="list-group-item">All pages are accessible from any other page through the navigation menu.</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

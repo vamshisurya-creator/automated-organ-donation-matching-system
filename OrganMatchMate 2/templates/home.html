@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Organ Donation Matching System{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mb-4">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <h1 class="display-5 text-primary">Automated Organ Donation Matching System</h1>
+                <p class="lead">
+                    Connecting organ donors with recipients through an intelligent matching algorithm
+                </p>
+                <hr>
+                <p>
+                    Our system helps match organ donors with recipients based on critical factors such as:
+                </p>
+                <ul>
+                    <li>Organ type compatibility</li>
+                    <li>Blood group compatibility</li>
+                    <li>Urgency levels of recipients</li>
+                    <li>Donor availability</li>
+                </ul>
+                <div class="d-grid gap-2 d-md-flex mt-4">
+                    <a href="{{ url_for('donor_register') }}" class="btn btn-primary me-md-2">
+                        <i class="fas fa-hand-holding-heart me-2"></i> Register as Donor
+                    </a>
+                    <a href="{{ url_for('recipient_register') }}" class="btn btn-secondary">
+                        <i class="fas fa-procedures me-2"></i> Register as Recipient
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body">
+                <h4><i class="fas fa-chart-pie text-primary me-2"></i> System Statistics</h4>
+                <div class="row text-center mt-4">
+                    <div class="col-4">
+                        <div class="bg-light rounded-circle d-flex align-items-center justify-content-center mx-auto mb-2" style="width: 60px; height: 60px;">
+                            <i class="fas fa-user-plus text-primary fa-2x"></i>
+                        </div>
+                        <h3 class="mb-0">{{ donors_count }}</h3>
+                        <p class="text-muted small">Active Donors</p>
+                    </div>
+                    <div class="col-4">
+                        <div class="bg-light rounded-circle d-flex align-items-center justify-content-center mx-auto mb-2" style="width: 60px; height: 60px;">
+                            <i class="fas fa-procedures text-danger fa-2x"></i>
+                        </div>
+                        <h3 class="mb-0">{{ recipients_count }}</h3>
+                        <p class="text-muted small">Recipients</p>
+                    </div>
+                    <div class="col-4">
+                        <div class="bg-light rounded-circle d-flex align-items-center justify-content-center mx-auto mb-2" style="width: 60px; height: 60px;">
+                            <i class="fas fa-link text-success fa-2x"></i>
+                        </div>
+                        <h3 class="mb-0">{{ matches_count }}</h3>
+                        <p class="text-muted small">Matches</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <h4><i class="fas fa-tachometer-alt text-primary me-2"></i> Quick Actions</h4>
+                <div class="list-group mt-3">
+                    <a href="{{ url_for('match') }}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-link me-2"></i> Run Matching Algorithm
+                    </a>
+                    <a href="{{ url_for('organs') }}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-clipboard-list me-2"></i> View Organ Availability
+                    </a>
+                    <a href="{{ url_for('notifications') }}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-bell me-2"></i> Check Notifications
+                    </a>
+                    <a href="{{ url_for('admin') }}" class="list-group-item list-group-item-action">
+                        <i class="fas fa-user-shield me-2"></i> Admin Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <div class="text-center mb-3">
+                    <i class="fas fa-hand-holding-heart fa-3x text-primary"></i>
+                </div>
+                <h4 class="card-title text-center">Become a Donor</h4>
+                <p class="card-text">
+                    Register as a donor to help save lives. Your donation could be the gift of life for someone in need.
+                </p>
+                <div class="d-grid">
+                    <a href="{{ url_for('donor_register') }}" class="btn btn-outline-primary">Register Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <div class="text-center mb-3">
+                    <i class="fas fa-procedures fa-3x text-danger"></i>
+                </div>
+                <h4 class="card-title text-center">Register as a Recipient</h4>
+                <p class="card-text">
+                    If you or someone you know needs an organ transplant, register as a recipient to find a suitable donor.
+                </p>
+                <div class="d-grid">
+                    <a href="{{ url_for('recipient_register') }}" class="btn btn-outline-danger">Register Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <div class="text-center mb-3">
+                    <i class="fas fa-search fa-3x text-success"></i>
+                </div>
+                <h4 class="card-title text-center">Check Availability</h4>
+                <p class="card-text">
+                    View the current availability of organs and check if there's a potential match for your needs.
+                </p>
+                <div class="d-grid">
+                    <a href="{{ url_for('organs') }}" class="btn btn-outline-success">View Availability</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

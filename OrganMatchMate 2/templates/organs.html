@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block title %}Organ Availability - Organ Donation Matching System{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <h2 class="card-title mb-4">
+                    <i class="fas fa-clipboard-list text-primary me-2"></i>
+                    Organ Availability Tracker
+                </h2>
+                
+                <div class="alert alert-info mb-4">
+                    <h5 class="alert-heading"><i class="fas fa-info-circle me-2"></i> About Organ Availability</h5>
+                    <p>
+                        This dashboard shows the current availability of organs from registered donors, organized by organ type and blood group.
+                        It also displays the number of recipients waiting for each organ type by urgency level.
+                    </p>
+                </div>
+                
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header bg-light">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-users text-success me-2"></i>
+                                    Recipients Waiting by Urgency
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Organ Type</th>
+                                                <th class="text-danger">High Urgency</th>
+                                                <th class="text-warning">Medium Urgency</th>
+                                                <th class="text-info">Low Urgency</th>
+                                                <th>Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for organ_type in organ_types %}
+                                            <tr>
+                                                <td>
+                                                    {% if organ_type == 'Kidney' %}
+                                                        <span class="badge bg-success">{{ organ_type }}</span>
+                                                    {% elif organ_type == 'Liver' %}
+                                                        <span class="badge bg-danger">{{ organ_type }}</span>
+                                                    {% elif organ_type == 'Heart' %}
+                                                        <span class="badge bg-danger">{{ organ_type }}</span>
+                                                    {% elif organ_type == 'Lung' %}
+                                                        <span class="badge bg-primary">{{ organ_type }}</span>
+                                                    {% else %}
+                                                        <span class="badge bg-secondary">{{ organ_type }}</span>
+                                                    {% endif %}
+                                                </td>
+                                                <td>{{ recipient_counts[organ_type]['high'] }}</td>
+                                                <td>{{ recipient_counts[organ_type]['medium'] }}</td>
+                                                <td>{{ recipient_counts[organ_type]['low'] }}</td>
+                                                <td>{{ recipient_counts[organ_type]['high'] + recipient_counts[organ_type]['medium'] + recipient_counts[organ_type]['low'] }}</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                {% for organ_type in organs_by_type %}
+                <div class="card mb-4">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">
+                            {% if organ_type == 'Kidney' %}
+                                <i class="fas fa-kidney text-success me-2"></i>
+                            {% elif organ_type == 'Liver' %}
+                                <i class="fas fa-lungs text-danger me-2"></i>
+                            {% elif organ_type == 'Heart' %}
+                                <i class="fas fa-heart text-danger me-2"></i>
+                            {% elif organ_type == 'Lung' %}
+                                <i class="fas fa-lungs text-primary me-2"></i>
+                            {% else %}
+                                <i class="fas fa-procedures text-secondary me-2"></i>
+                            {% endif %}
+                            {{ organ_type }} Availability
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead class="table-light">
+                                    <tr>
+                                        {% for blood_group in blood_groups %}
+                                        <th class="text-center">{{ blood_group }}</th>
+                                        {% endfor %}
+                                        <th class="text-center">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        {% set total = 0 %}
+                                        {% for blood_group in blood_groups %}
+                                            {% set count = organs_by_type[organ_type][blood_group] %}
+                                            {% set total = total + count %}
+                                            <td class="text-center">
+                                                {% if count > 0 %}
+                                                    <span class="badge bg-success fs-6">{{ count }}</span>
+                                                {% else %}
+                                                    <span class="badge bg-secondary fs-6">0</span>
+                                                {% endif %}
+                                            </td>
+                                        {% endfor %}
+                                        <td class="text-center">
+                                            <span class="badge {% if total > 0 %}bg-primary{% else %}bg-secondary{% endif %} fs-6">{{ total }}</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                
+                <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-4">
+                    <a href="{{ url_for('donor_register') }}" class="btn btn-primary">
+                        <i class="fas fa-hand-holding-heart me-2"></i> Register as Donor
+                    </a>
+                    <a href="{{ url_for('match') }}" class="btn btn-success">
+                        <i class="fas fa-link me-2"></i> Run Matching Algorithm
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

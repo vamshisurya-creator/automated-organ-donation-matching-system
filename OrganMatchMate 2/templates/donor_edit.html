@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Donor - Organ Donation Matching System{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-light">
+                <h2 class="card-title mb-0">
+                    <i class="fas fa-edit text-primary me-2"></i>
+                    Edit Donor
+                </h2>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('edit_donor', donor_id=donor.id) }}">
+                    {{ form.hidden_tag() }}
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ form.name.label(class="form-label") }}
+                                {% if form.name.errors %}
+                                    {{ form.name(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.name.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.name(class="form-control") }}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ form.age.label(class="form-label") }}
+                                {% if form.age.errors %}
+                                    {{ form.age(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.age.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.age(class="form-control") }}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ form.gender.label(class="form-label") }}
+                                {% if form.gender.errors %}
+                                    {{ form.gender(class="form-select is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.gender.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.gender(class="form-select") }}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ form.blood_group.label(class="form-label") }}
+                                {% if form.blood_group.errors %}
+                                    {{ form.blood_group(class="form-select is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.blood_group.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.blood_group(class="form-select") }}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ form.organ_type.label(class="form-label") }}
+                                {% if form.organ_type.errors %}
+                                    {{ form.organ_type(class="form-select is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.organ_type.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.organ_type(class="form-select") }}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ form.contact.label(class="form-label") }}
+                                {% if form.contact.errors %}
+                                    {{ form.contact(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.contact.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.contact(class="form-control") }}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-check form-switch mb-4">
+                        {{ form.availability(class="form-check-input") }}
+                        {{ form.availability.label(class="form-check-label") }}
+                    </div>
+                    
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ url_for('admin') }}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left me-1"></i> Back to Admin
+                        </a>
+                        {{ form.submit(class="btn btn-primary") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
